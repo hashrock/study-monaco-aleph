@@ -1,0 +1,1 @@
+esbuild --bundle main.ts --outfile=out.js --format=esm

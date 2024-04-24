@@ -1,22 +1,35 @@
-import { editor, Uri } from "https://esm.sh/monaco-editor@0.36.1";
-// import "https://esm.sh/monaco-editor@0.36.1?css";
+import { editor, Uri } from "monaco-editor";
+// import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker";
+// import editorWorker from "monaco-editor/esm/vs/editor/editor.worker";
+import tsWorker from "./vs/language/typescript/ts.worker.js";
+import editorWorker from "./vs/editor/editor.worker.js";
+// import "https://esm.sh/monaco-editor?css";
 
 // deno-lint-ignore ban-ts-comment
 // @ts-ignore
+// self.MonacoEnvironment = {
+//   async getWorker(_: unknown, label: string) {
+//     if (label === "typescript" || label === "javascript") {
+//       // const { default: tsWorker } = await import(
+//       //   "https://esm.sh/monaco-editor/esm/vs/language/typescript/ts.worker?worker"
+//       // );
+//       return tsWorker();
+//     }
+//     // const { default: editorWorker } = await import(
+//     //   "https://esm.sh/monaco-editor/esm/vs/editor/editor.worker?worker"
+//     // );
+//     return editorWorker();
+//   },
+// };
 self.MonacoEnvironment = {
-  async getWorker(_: unknown, label: string) {
-    if (label === "typescript" || label === "javascript") {
-      const { default: tsWorker } = await import(
-        "https://esm.sh/monaco-editor@0.36.1/esm/vs/language/typescript/ts.worker?worker"
-      );
-      return tsWorker();
-    }
-    const { default: editorWorker } = await import(
-      "https://esm.sh/monaco-editor@0.36.1/esm/vs/editor/editor.worker?worker"
-    );
-    return editorWorker();
-  },
+	getWorkerUrl: function (moduleId, label) {
+		if (label === 'typescript' || label === 'javascript') {
+			return './vs/language/typescript/ts.worker.js';
+		}
+		return './vs/editor/editor.worker.js';
+	}
 };
+
 
 export function createModel(name: string, source: string) {
   const lang = getLanguage(name);

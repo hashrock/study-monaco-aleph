@@ -1,1 +1,1 @@
-esbuild --bundle main.ts --outfile=out.js --format=esm
+esbuild --bundle main.ts --outfile=out.js --format=esm --loader:.css=file

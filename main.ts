@@ -2,7 +2,13 @@ import { createEditor, createModel } from "./editor.ts";
 
 const el = document.querySelector(".editor");
 const editor = createEditor(el as HTMLElement);
-const model = createModel("mod.ts", `// Monaco Editor x Aleph.js (SPA mode) \n\nconsole.log("Hello, world!");\n`);
+
+const script = `function App() {
+  return <div>Hello, world!</div>;
+}
+`
+
+const model = createModel("mod.tsx", script);
 
 el!.innerHTML = "";
 editor.setModel(model);

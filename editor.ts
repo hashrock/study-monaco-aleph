@@ -1,8 +1,8 @@
-import { editor, Uri } from "monaco-editor";
+import { editor, Uri, languages } from "monaco-editor";
 // import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker";
 // import editorWorker from "monaco-editor/esm/vs/editor/editor.worker";
-import tsWorker from "./vs/language/typescript/ts.worker.js";
-import editorWorker from "./vs/editor/editor.worker.js";
+// import tsWorker from "./vs/language/typescript/ts.worker.js";
+// import editorWorker from "./vs/editor/editor.worker.js";
 // import "https://esm.sh/monaco-editor?css";
 
 // deno-lint-ignore ban-ts-comment
@@ -27,8 +27,20 @@ self.MonacoEnvironment = {
 			return './vs/language/typescript/ts.worker.js';
 		}
 		return './vs/editor/editor.worker.js';
-	}
+	},
 };
+
+languages.typescript.typescriptDefaults.setCompilerOptions({
+  target: languages.typescript.ScriptTarget.ES2016,
+  allowNonTsExtensions: true,
+  moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
+  module: languages.typescript.ModuleKind.CommonJS,
+  noEmit: true,
+  typeRoots: ["node_modules/@types"],
+  jsx: languages.typescript.JsxEmit.React,
+  jsxFactory: 'React.createElement',
+  reactNamespace: 'React',
+})
 
 
 export function createModel(name: string, source: string) {

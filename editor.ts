@@ -1,4 +1,5 @@
 import { editor, Uri, languages } from "monaco-editor";
+import { getReactTypes } from "./react.index";
 // import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker";
 // import editorWorker from "monaco-editor/esm/vs/editor/editor.worker";
 // import tsWorker from "./vs/language/typescript/ts.worker.js";
@@ -36,11 +37,25 @@ languages.typescript.typescriptDefaults.setCompilerOptions({
   moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
   module: languages.typescript.ModuleKind.CommonJS,
   noEmit: true,
+  esModuleInterop: true,
   typeRoots: ["node_modules/@types"],
   jsx: languages.typescript.JsxEmit.React,
   jsxFactory: 'React.createElement',
+  allowJs: true,
   reactNamespace: 'React',
 })
+
+languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: false,
+  noSyntaxValidation: false,
+});
+
+// https://github.com/microsoft/monaco-editor/issues/264#issuecomment-654578687
+languages.typescript.typescriptDefaults.addExtraLib(
+  getReactTypes(),
+  `file:///node_modules/@react/types/index.d.ts`
+);
+
 
 
 export function createModel(name: string, source: string) {
